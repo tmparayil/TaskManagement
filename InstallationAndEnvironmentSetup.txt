@@ -1,0 +1,102 @@
+JDeveloper:-
+	1). Download Oracle and install JDeveloper 12.1.3.0.0 , Generic(http://www.oracle.com/technetwork/developer-tools/jdev/downloads/jdev1213download-2739275.html)
+	2). From JDev install MAF extension.(Go to Help->Check for updates->Check for all->Next->Search MAF-> Wait for it to get download and install).
+	3). Download JDk 1.7 and 1.8.
+	4). Configure JDev to use JDK 1.7 and MAF to JDK 1.8 when prompted to enter JDK path.
+
+
+Android Studio:
+	1). Download and install Android Studio 2.2.2.0.
+	2). Go to Your sdk(Default path: C:\Users\vhaldiya.ORADEV\AppData\Local\Android\sdk).
+	3). Start SDK Manager and:
+		a). Install sdk tools, Android SDK Platform-tools from tools.
+		b). Install Documentation, SDk Platform, Google APIs Intel x86 Atom_System Image, Google APIs, Sources for Android SDK from Android 7.0(API Level 24).
+		c). Install Android Support repo, Google Play Services, Google repo, Intel x86 Emulator Accelator(HAXM Installer) from Extras.
+	4). Go to your AVD Manager and create a virtual device. Folloe following instruction:
+		a). Device: Nexus 4, Target: Android 7.0 - API Level 24, Skin: Skin with dynamic hardware control, RAM: 768, VM Heap: 64, Internal Storage: 500, SD Card size: 500, Check on 'Use Host GPU'.
+		b). Front Camera, Back Camera: according to requirement.
+		
+	NOTE: Devices created with API Level < 24 will not support web-view from Oracle JET APP.
+	
+Setting Environment Variable:
+	1). Create a Environment Variable 'ANDROID_HOME' and setr its value to your sdk(C:\Users\vhaldiya.ORADEV\AppData\Local\Android\sdk).
+	2). In 'Path' Variable add build-tools, platform-tools and tools from your sdk directory(C:\Users\vhaldiya.ORADEV\AppData\Local\Android\sdk\build-tools;C:\Users\vhaldiya.ORADEV\AppData\Local\Android\sdk\tools).
+	3). Also. In path add: jdk1.8/bin(D:\Java\jdk1.8.0_112\bin).
+	
+Link To Follow:-
+	https://docs.oracle.com/middleware/jet202/jet/developer/GUID-C75CD8DC-5084-4831-BE1A-FFEE4EA8600C.htm#JETDG-GUID-67A23ACD-73AD-45B8-8F44-D3501B9A8F24
+	
+	1). Install Git:-
+		a). Download Git from browser and install it(default install).
+		b). Set proxy:
+				git config --global http.proxy http://my.proxyserver.com:80
+				git config --global https.proxy http://my.proxyserver.com:80
+				
+	2). Install Node.js:- 
+		a). Instead of installing node.js from binary into default location, download the source code(.msi, https://nodejs.org/en/download/) and keep the unzipped in and drive say D:/.
+		b). set npm proxy:
+				npm config set proxy http://my.proxyserver.com:80
+				npm config set https.proxy http://my.proxyserver.com:80
+		c). Add Node.js to your 'Path' Variable.(D:\node-v7.1.0-win-x64)
+				
+	3). Install Yeoman: [sudo] npm install -g yo
+
+	NOTE:
+	It may not be obvious that the installation didn’t succeed. Enter npm list –g yo to verify that the command succeeded. If the package isn’t listed, scroll through the install command output to locate the source of the failure.
+	If you receive an error related to a network failure, verify that you have set up your proxy correctly if needed.
+
+If you receive an error that your version of npm is outdated, type the following to update the version: [sudo] npm install -g npm.
+
+	4). Install Grunt:- 
+		a). [sudo] npm install -g grunt-cli
+		
+	5). Install Bower:- 
+		a). [sudo] npm install -g bower
+		b).	To configure a proxy server, you must add the proxy definitions to the .bowerrc file in your home directory. For example:
+			{
+			  ...
+			  "proxy": "http-proxy-server-URL:port-number",
+			  "https-proxy": "https-proxy-server-URL:port-number",
+			  ...
+			}   
+
+	6). Install the Oracle JET Yeoman Generator:-
+		a). [sudo] npm install -g generator-oraclejet
+			After you have completed installation, you can verify that the generator installed successfully using:
+			[sudo] npm list -g generator-oraclejet
+		b). Set Proxy:-
+			Include the complete URL in the command:-
+				set HTTP_PROXY=http://my.proxyserver.com:80
+				set HTTPS_PROXY=http://my.proxyserver.com:80
+	
+	7). Install Cordova:-
+			a). [sudo] npm install -g cordova
+			
+	8). At a command prompt, enter yo oraclejet:hybrid with optional arguments to create the Oracle JET application and scaffolding:-
+			yo oraclejet:hybrid [directory] [--appId=reverse-domain-style-identifier] [--appName=application-display-title] [--template={template-name|template-url}] [--platforms=android,ios].
+			Example:-
+				yo oraclejet:hybrid myApp --appid=com.oracle.samples.myapp --appname=MyApp --template=navdrawer --platform=android
+	
+	9). If you use a proxy server, the build command will fail the first time you issue it. To resolve, create a gradle.properties file in your HOME/.gradle directory and rerun the build command. The file should 
+		contain the following:
+			systemProp.http.proxyHost=proxy-server-URL
+			systemProp.http.proxyPort=80
+			systemProp.https.proxyHost=proxy-server-URL
+			systemProp.https.proxyPort=80
+			
+	10). To build the project from project scaffolding (NOTE : navigate to the current grunt containing folder):-
+			grunt build --platform=android --verbose
+			
+			NOTE :: If the build does not proceed due to "Host Route Not Found" or "Connection Timed Out" 
+					The problem might be the gradle.properties file is not getting picked up
+					In this case , export GRADLE_OPTS = "-Dhttp.proxyHost=www-proxy.us.oracle.com -Dhttp.proxyPort=80 -Dhttps.proxyHost=www-proxy.us.oracle.com -Dhttps.proxyPort=80" [explicitly specifying the proxies for the build]
+					
+					
+					
+			
+	11). To deploy app on device or browser:-
+			grunt serve --platform=ios|android [--web=true --serverPort=server-port-number --livereloadPort=live-reload-port-number --destination=emulator-name|device --disableLiveReload=true]
+			Example:-
+				grunt serve --platform=ios|android --browser (--web=true is deprecated)
+
+	

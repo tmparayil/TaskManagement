@@ -1,0 +1,54 @@
+Running the JET App on emulator using maf:-
+	1). Create a new Mobile Application Project in JDevO(File->New->Application->Mobile Application Framework Application->Next->Finish).
+	2). go to maf-feature.xml(Overview)->Add feature->Make its content as RemoteURL.
+	3). connection URL is URL where your JET app is hosted.
+	4). If 'Try/Check connection' fails, dont't worry, it should work fine.
+	
+Accessing Contacts:-
+	1). Add Contact MAF plugin from maf-application.xml->plugins.
+	2). Follow this reference(straight forward, no road-blocks): https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-contacts/
+	
+Accessing Calendar:-
+	1). Oracle MAF does not provide plugin for accessing device's calendar, instead use this plugin: https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin
+	2). Download the above plugin, and add the plugin in your Oracle MAF application(maf-application.xml->plugins->add a plugin).
+	3). Use the above reference for the usage of the plugin.
+	4). Google does not allow you to access emulator's default calendar.(When clicked on default calendar, it asks you to sign-in with a gmail account, but then also you are not allowed to create events etc..Read more about it on stackoverflow).
+	5). Hack: Need to download Google Calendar from app store, if your emulator doesn't have a Google Play Store, download it or else download aptoide.apk and install it on your emulator.
+	6). Search google calendar in aptoide and install it.
+	7). Now, when you run the app that wants access to calendar, emulator prompts you to use either default calendar, ornewly installed Google calendar. Select Google Calendar to see if your application logic is working.
+	
+Sharing data into our application from other applications(In our case sharing .jpg from Gallery):
+	1). To make the application appear into android share list, changes need to be done in AndroidMainfest.xml, but in Oracle MAF development AndroidMainfest.xml is generated at run-time.
+	2). So to reflect changes in AndroidManifest.xml, make changes in AndroidManifest.template.xml, follow the link: https://blogs.oracle.com/mobile/entry/android_device_permissions_and_form. The link tells you how to change the 
+		android-manifest-template.xml.
+	3). Code changes required in the android-manifest-template.xml:
+			<intent-filter>
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="tsome mime here" />
+			</intent-filter>
+	4). JavaScript code coming from remote url cannot access internal storage of the emulator, if you need to access internal storage, the code has to be in the device. Write a plugin if need be, add and again deploy the app.
+	5). Add an intent plugin:https://github.com/napolitano/cordova-plugin-intent
+	6). Use the above plugin to get the information about the shared content..such as its realPath, mimetyoe..etc..
+	7). Add another in-app browser plugin:https://github.com/apache/cordova-plugin-inappbrowser
+	8). Use the above plugin to show the shared content on the in-app browser.
+	
+Accessing geo-location:-
+	1). Add geo-location plugin from Oracle MAF application, (Goto->maf-application.xml->plugins->Search for geolocation).
+	2). Google doesn't allow code coming from http://(url, unsecured) to access device's goeo-location.
+	3). To access geo-location, move your code should come from https://, secured. Read https://en.wikipedia.org/wiki/Same-origin_policy.
+	
+NOTES:-
+	1). To start emulator from cmd:
+			Go to tools directory of your sdk(C:\Users\vhaldiya.ORADEV\AppData\Local\Android\sdk\tools):
+				emulator.exe -avd Name_of_your_avd -http-proxy proxy_URL:port.
+	
+	2).	Always try to deploy your app into a package(apk) first, then install apk file into emulator/device. 			
+	
+	3). To install .apk on the emulator:
+			Go to CordovaLib directory of your JET application(D:\CordovaApp\myApp2\hybrid\platforms\android\CordovaLib):
+				adb install location_of_your_apk(C:\JDeveloper\mywork\TestRemoteURL\deploy\Android1\TestRemoteURL.apk).
+	
+	4). If the app does not open in emulator at first, uninstall the app from the emulator, and repeat step3 and step4 until it opens.
+	5). Read bascis about grunt.
+	
